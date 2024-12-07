@@ -10,23 +10,9 @@ var RegistrationData = sequelize.define(
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    fullName: {
-      type: Sequelize.STRING,
-    },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      unique: true,
-    },
     walletAddress: {
       type: Sequelize.STRING,
-    },
-    role: {
-      type: Sequelize.STRING,
-    },
-    password: {
-      type: Sequelize.STRING,
-    },
+    }
   },
   {
     freezeTableName: true,

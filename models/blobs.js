@@ -8,18 +8,15 @@ var blobs = sequelize.define('blobs', {
     primaryKey: true,
     type: Sequelize.INTEGER,
   },
-  userId: {
+  walletAddress: {
     type: Sequelize.INTEGER,
   },
   executionId: {
     type: Sequelize.INTEGER,
   },
-  executionBlockState: {
+  BlockNo: {
     type: Sequelize.STRING,
-  },
-  executionChainIds: {
-    type: Sequelize.STRING,
-  },
+  }
 }, {
   createdAt: true,
   updatedAt: true,
