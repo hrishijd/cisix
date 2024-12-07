@@ -196,6 +196,7 @@ services:
     container_name: node_app_1
     environment:
       DATABASE_URL: postgres://postgres:password@database1:5432/postgres
+      LEADER: true
     ports:
       - "3001:3000"
     depends_on:

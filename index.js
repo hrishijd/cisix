@@ -60,8 +60,10 @@ async function startValidator() {
 }
 
 function performOperation(chainId, blockNumber) {
-    // Define the operation to be performed upon consensus
-    console.log(`Performing operation on chain ${chainId}, block ${blockNumber}`);
+    if(process.env.LEADER){
+        // Define the operation to be performed upon consensus
+        console.log(`Performing operation on chain ${chainId}, block ${blockNumber}`);
+    }
 }
 
 // Wrap in an async IIFE
