@@ -6,7 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --experimental-modules --es-module-specifier-resolution=node app.js"
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/hrishijd/cisix#readme",
   "dependencies": {
+    "ethers": "^6.13.4",
+    "redis": "^4.7.0",
     "axios": "^1.7.9",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-rate-limit": "^7.4.1",
