@@ -1,6 +1,7 @@
 var axios = require('axios');
 var FormData = require('form-data');
 var fs = require('fs');
+var path = require('path');
 var dotenv = require('dotenv');
 dotenv.config();
 
@@ -17,41 +18,28 @@ const createBucket = async (bucketName) => {
   }
 };
 
-// Function to upload a JavaScript file to a bucket
-const uploadFile = async (bucketName, filePath) => {
-  const form = new FormData();
-  form.append('file', fs.createReadStream(filePath));
 
-  try {
-    const response = await axios.post(`${API_BASE_URL}/buckets/${bucketName}/files`, form, {
-      headers: form.getHeaders(),
-    });
-    console.log('File uploaded:', response.data);
-  } catch (error) {
-    console.error('Error uploading file:', error.response ? error.response.data : error.message);
-  }
-};
-
+// Function to download a file
 async function downloadFile(bucketName, fileName, outputDir) {
     try {
       const response = await axios.get(`${API_BASE_URL}/buckets/${bucketName}/files/${fileName}/download`, {
         responseType: 'blob',
       });
       console.log(`File downloaded: ${fileName}`);
-      fs.writeFileSync(`./${outputDir}/${fileName}`, response.data);
+      fs.writeFileSync(path.join(__dirname, outputDir, fileName), response.data);
     } catch (error) {
       console.error(error.response ? error.response.data : error.message);
     }
-  }
+}
 
 // Usage examples
 // Create a bucket named "myBucket"
 // createBucket('myBucket');
 
 // Upload a JavaScript file to the "myBucket"
-// uploadFile('myBucket', '/home/kyler/work/Personal/cisix/controller/example.js');
+// uploadFile('myBucket', 'README.md'); // Relative path example
 
-// Upload a JavaScript file to the "myBucket"
-// downloadFile('myBucket', 'example.js', 'controller/jscodes');
+// Download a file to a specific directory
+// downloadFile('myBucket', 'example.js', 'controller/jscodes'); 
 
-module.exports = {uploadFile, downloadFile}
+module.exports = { uploadFile, downloadFile };
