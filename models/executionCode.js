@@ -1,24 +1,24 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../../Express Database/connection';
+var Sequelize = require('sequelize');
+var sequelize = require('../../Express Database/connection');
 
-const executionCode = sequelize.define('executionCode', {
+var executionCode = sequelize.define('executionCode', {
   executionId: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
   },
   userId: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
   },
   executionBlockNo: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
   },
   executionBlockState: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
   },
   executionChainIds: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
   },
 }, {
   createdAt: true,
@@ -26,8 +26,7 @@ const executionCode = sequelize.define('executionCode', {
   freezeTableName: true,
   timestamps: true,
   logging: false,
-
 });
 
 // sequelize.sync({ alter: true });
-export default executionCode;
+module.exports = executionCode;

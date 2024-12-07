@@ -26,7 +26,6 @@ const requestData = sequelize.define('requestData', {
   freezeTableName: true,
   timestamps: true,
   logging: false,
-
 });
 
 // sequelize.sync({ alter: true });

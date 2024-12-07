@@ -1,14 +1,14 @@
-import express from 'express';
-import jwt from 'jsonwebtoken';
-import aggregateInputs from '../../controller/executeJSonchain';
+var express = require('express');
+var jwt = require('jsonwebtoken');
+var aggregateInputs = require('../../controller/executeJSonchain');
 
-const router = express.Router();
+var router = express.Router();
 
 function verifyToken(req, res, next) {
-  const bearerToken = req.headers.authorization;
+  var bearerToken = req.headers.authorization;
   if (typeof bearerToken !== 'undefined') {
-    const bearer = bearerToken.split(' ');
-    const token = bearer[1];
+    var bearer = bearerToken.split(' ');
+    var token = bearer[1];
     req.token = token;
     next();
   } else {
@@ -16,8 +16,8 @@ function verifyToken(req, res, next) {
   }
 }
 
-router.post('/', verifyToken, async (req, res) => {
-    jwt.verify(req.token, process.env.SECRET_KEY, (err) => {
+router.post('/', verifyToken, function(req, res) {
+    jwt.verify(req.token, process.env.SECRET_KEY, function(err) {
         if (err) {
             res.status(403).send('Unauthorized User');
         } else {
@@ -26,5 +26,4 @@ router.post('/', verifyToken, async (req, res) => {
     });
 });
 
-
-export default router;
+module.exports = router;

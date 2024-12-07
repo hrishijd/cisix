@@ -1,7 +1,7 @@
-import axios from 'axios';
-import FormData from 'form-data';
-import fs from 'fs';
-import dotenv from 'dotenv';
+var axios = require('axios');
+var FormData = require('form-data');
+var fs = require('fs');
+var dotenv = require('dotenv');
 dotenv.config();
 
 // Get the API_BASE_URL from the environment
@@ -53,3 +53,5 @@ async function downloadFile(bucketName, fileName, outputDir) {
 
 // Upload a JavaScript file to the "myBucket"
 // downloadFile('myBucket', 'example.js', 'controller/jscodes');
+
+module.exports = {uploadFile, downloadFile}

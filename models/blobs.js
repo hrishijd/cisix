@@ -1,24 +1,24 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../../Express Database/connection';
+var Sequelize = require('sequelize');
+var sequelize = require('../../Express Database/connection');
 
-const blobs = sequelize.define('blobs', {
+var blobs = sequelize.define('blobs', {
   blobId: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
   },
   userId: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
   },
   executionId: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
   },
   executionBlockState: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
   },
   executionChainIds: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
   },
 }, {
   createdAt: true,
@@ -26,8 +26,7 @@ const blobs = sequelize.define('blobs', {
   freezeTableName: true,
   timestamps: true,
   logging: false,
-
 });
 
 // sequelize.sync({ alter: true });
-export default blobs;
+module.exports = blobs;

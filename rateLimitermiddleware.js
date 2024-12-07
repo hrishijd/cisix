@@ -1,4 +1,4 @@
-import rateLimit from 'express-rate-limit';
+const rateLimit = require('express-rate-limit');
 
 const rateLimiterUsingThirdParty = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 hrs in milliseconds
@@ -8,4 +8,4 @@ const rateLimiterUsingThirdParty = rateLimit({
   legacyHeaders: false,
 });
 
-export default rateLimiterUsingThirdParty;
+module.exports = rateLimiterUsingThirdParty;

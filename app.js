@@ -1,8 +1,8 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
-import rateLimiterMiddleware from './rateLimitermiddleware';
-import executeJScode from './api/routes/executeJScode';
+const express = require('express');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+const rateLimiterMiddleware = require('./rateLimitermiddleware');
+const executeJScode = require('./api/routes/executeJScode');
 
 dotenv.config();
 const app = express();
@@ -33,8 +33,9 @@ app.use((req, res, next) => {
   error.status = 404;
   next(error);
 });
+
 // To handle internal server errors 500
-app.use((error, req, res) => {
+app.use((error, req, res, next) => { // Added `next` to maintain proper middleware signature
   res.status(error.status || 500);
   res.json({
     error: {
@@ -46,4 +47,4 @@ app.use((error, req, res) => {
 const port = process.env.DEV_PORT || 3000;
 app.listen(port);
 
-export default app;
+module.exports = app;

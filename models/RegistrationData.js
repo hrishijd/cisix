@@ -1,27 +1,27 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../../Express Database/connection';
+var Sequelize = require('sequelize');
+var sequelize = require('../../Express Database/connection');
 
-const RegistrationData = sequelize.define('RegistrationData', {
+var RegistrationData = sequelize.define('RegistrationData', {
   userId: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
   },
   fullName: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
   },
   email: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
   },
   walletAddress: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
   },
   role: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
   },
   password: {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
   },
 }, {
   createdAt: false,
@@ -29,8 +29,7 @@ const RegistrationData = sequelize.define('RegistrationData', {
   freezeTableName: true,
   timestamps: false,
   logging: false,
-
 });
 
 // sequelize.sync({ alter: true });
-export default User;
+module.exports = RegistrationData;

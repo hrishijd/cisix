@@ -1,13 +1,30 @@
-import { Sequelize } from 'sequelize';
+const Sequelize = require('sequelize');
+const dotenv = require('dotenv');
 
-// Option 3: Passing parameters separately (other dialects)
-const sequelize = new Sequelize('postgresql://postgres:iNZJaMIykODvJdErjkMDQiBrCOUBpiwF@autorack.proxy.rlwy.net:15517/railway'); // Example for postgres
+// Load environment variables from a .env file
+dotenv.config();
 
-try {
-  await sequelize.authenticate();
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Unable to connect to the database:', error);
+// Retrieve PostgreSQL connection details from environment variables
+const DATABASE_URL = process.env.DATABASE_URL;
+
+// Ensure DATABASE_URL is defined
+if (!DATABASE_URL) {
+  throw new Error('DATABASE_URL is not defined in environment variables');
 }
 
-export default sequelize; 
+// Initialize Sequelize using the connection URL
+const sequelize = new Sequelize(DATABASE_URL, {
+  dialect: 'postgres',
+  logging: false, // Disable logging (optional)
+});
+
+// Test the connection
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((error) => {
+    console.error('Unable to connect to the database:', error);
+  });
+
+module.exports = sequelize;
