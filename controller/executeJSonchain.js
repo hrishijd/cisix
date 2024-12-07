@@ -2,58 +2,83 @@ var dotenv = require('dotenv');
 var multer = require('multer');
 var path = require('path');
 var fs = require('fs');
+const ExecutionCode = require('../models/executionCode');
 
 dotenv.config();
 
 // Set up storage configuration for multer
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // Ensure the jscodes folder exists
         var directory = path.join(__dirname, 'jscodes');
         if (!fs.existsSync(directory)) {
-            fs.mkdirSync(directory); // Create folder if not exists
+            fs.mkdirSync(directory);
         }
-        cb(null, directory); // Save files to jscodes folder
+        cb(null, directory);
     },
     filename: function (req, file, cb) {
-        // Use the original file name, or create a unique name if needed
         cb(null, file.originalname);
     }
 });
 
 var upload = multer({ storage: storage });
 
-var bucketName = process.env.AKAVE_BUCKET;
+var aggregateInputs = function (req) {
+    // Changed to return data instead of sending response
+    return {
+        jsCodeFile: req.file ? req.file.filename : null,
+        userEmail: req.body.useremail,
+        startBlockNumber: req.body.startBlockNumber,
+        blockSplit: req.body.blockSplit,
+        chainIds: req.body.chainIds,
+        event: req.body.event,
+    };
+};
 
-var aggregateInputs = function (req, res) {
+const addtoDataSource = async (req) => {
+    var akaveId = "asdasd";
     try {
-        // Aggregating input details from the request body
-        var aggregatedData = {
-            jsCodeFile: req.file ? req.file.filename : null, // File name after upload
-            userEmail: req.body.useremail,
-            startBlockNumber: req.body.startBlockNumber,
-            blockSplit: req.body.blockSplit,
-            chainIds: req.body.chainIds,
-            event: req.body.event,
-        };
+        const executionRecord = await ExecutionCode.create({
+            useremail: req.body.useremail || null,
+            executionBlockNo: req.body.startBlockNumber,
+            executionFileName: req.file.filename,
+            executionAkaveID: akaveId,
+            executionBlockState: 'PENDING',
+            executionChainIds: Array.isArray(req.body.chainIds)
+                ? req.body.chainIds[0]
+                : parseInt(req.body.chainIds.split(',')[0]),
+        });
 
-        // Send the response with aggregated data
-        res.status(200).send(aggregatedData);
+        return {
+            success: true,
+            message: 'Code Updated Successfully',
+            data: executionRecord
+        };
     } catch (error) {
         console.error(error);
-        return res.status(500).send('An error occurred while processing the request');
+        throw error;
     }
 };
 
-// Use multer to handle file upload before the aggregateInputs function
-var uploadFile = upload.single('jsCodeFile'); // 'jsCodeFile' is the field name for the file in the form
-
-// Exporting the function that includes file upload handling
+// Main handler function
 module.exports = function (req, res) {
-    uploadFile(req, res, function (err) {
-        if (err) {
-            return res.status(400).send('Error uploading file');
+    const uploadFile = upload.single('jsCodeFile');
+
+    uploadFile(req, res, async function (err) {
+        try {
+            if (err) {
+                return res.status(400).send('Error uploading file');
+            }
+
+            const aggregatedData = aggregateInputs(req);
+            const result = await addtoDataSource(req, aggregatedData);
+
+            res.status(200).json({
+                ...result,
+                aggregatedData
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
         }
-        aggregateInputs(req, res);
     });
 };

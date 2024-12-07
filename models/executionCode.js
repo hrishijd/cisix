@@ -1,38 +1,39 @@
-var Sequelize = require('sequelize');
-var sequelize = require('../../Express Database/connection');
+// models/executionCode.js
+const { DataTypes } = require('sequelize');
+const sequelize = require('../connection'); // Adjust path as needed
 
-var executionCode = sequelize.define('executionCode', {
-  executionId: {
-    allowNull: false,
-    autoIncrement: true,
+const ExecutionCode = sequelize.define('ExecutionCodes', {
+  id: {
+    type: DataTypes.INTEGER,
     primaryKey: true,
-    type: Sequelize.INTEGER,
+    autoIncrement: true
   },
-  userId: {
-    type: Sequelize.INTEGER,
+  useremail: {
+    type: DataTypes.STRING,
+    allowNull: true
   },
   executionBlockNo: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
+    allowNull: false
   },
   executionFileName: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
+    allowNull: false
   },
   executionAkaveID: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
+    allowNull: false
   },
   executionBlockState: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
+    allowNull: false
   },
   executionChainIds: {
-    type: Sequelize.INTEGER,
-  },
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
 }, {
-  createdAt: true,
-  updatedAt: true,
-  freezeTableName: true,
-  timestamps: true,
-  logging: false,
+  tableName: 'ExecutionCodes'
 });
 
-// sequelize.sync({ alter: true });
-module.exports = executionCode;
+module.exports = ExecutionCode;
