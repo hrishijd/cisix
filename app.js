@@ -6,8 +6,9 @@ const executeJScode = require("./api/routes/executeJScode");
 const registerUser = require("../cisix/api/routes/userManagemnet");
 
 dotenv.config();
+const app = express();
 if(process.env.LEADER){
-  const app = express();
+  
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
@@ -33,7 +34,7 @@ if(process.env.LEADER){
   // Handle Rate Limit
   app.use(rateLimiterMiddleware);
 
-  // To serve custom request queries
+  // To serve custonodemonm request queries
   app.use("/executeJScode", executeJScode);
 
   // handle register queries
