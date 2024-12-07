@@ -1,6 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import executeJScode from '../../controller/executeJSonchain';
+import aggregateInputs from '../../controller/executeJSonchain';
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.post('/', verifyToken, async (req, res) => {
         if (err) {
             res.status(403).send('Unauthorized User');
         } else {
-            executeJScode(req, res);
+            aggregateInputs(req, res);
         }
     });
 });
