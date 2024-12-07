@@ -17,11 +17,7 @@ const registerUser = async (req, res) => {
 
     // Create the user
     const user = await User.create({
-      fullName,
-      email,
       walletAddress,
-      role,
-      password: hashedPassword,
     });
 
     // Return the created user (excluding the password)

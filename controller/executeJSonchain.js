@@ -26,7 +26,7 @@ var aggregateInputs = function (req) {
     // Changed to return data instead of sending response
     return {
         jsCodeFile: req.file ? req.file.filename : null,
-        userEmail: req.body.useremail,
+        walletAddress: req.body.walletAddress,
         startBlockNumber: req.body.startBlockNumber,
         blockSplit: req.body.blockSplit,
         chainIds: req.body.chainIds,
@@ -38,7 +38,7 @@ const addtoDataSource = async (req) => {
     var akaveId = "akaveId";
     try {
         const executionRecord = await ExecutionCode.create({
-            useremail: req.body.useremail || null,
+            walletAddress: req.body.walletAddress || null,
             executionBlockNo: req.body.startBlockNumber,
             executionFileName: req.file.filename,
             executionAkaveID: akaveId,
