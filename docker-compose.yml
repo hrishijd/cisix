@@ -198,7 +198,7 @@ services:
       DATABASE_URL: postgres://postgres:password@database1:5432/postgres
       LEADER: "true"
     ports:
-      - "3001:3000"
+      - "3006:3000"
     depends_on:
       - database1
       - migrations1

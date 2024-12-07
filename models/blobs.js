@@ -16,7 +16,7 @@ var blobs = sequelize.define('blobs', {
   },
   BlockNo: {
     type: Sequelize.STRING,
-  }
+  },
 }, {
   createdAt: true,
   updatedAt: true,

@@ -9,7 +9,7 @@
           primaryKey: true,
           type: Sequelize.INTEGER
         },
-        useremail: {
+        walletAddress: {
           type: Sequelize.STRING
         },
         executionBlockNo: {
