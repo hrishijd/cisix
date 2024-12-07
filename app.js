@@ -4,6 +4,21 @@ const dotenv = require("dotenv");
 const rateLimiterMiddleware = require("./rateLimitermiddleware");
 const executeJScode = require("./api/routes/executeJScode");
 const registerUser = require("../cisix/api/routes/userManagemnet");
+const { ApolloServer } = require("@apollo/server");
+const { startStandaloneServer } = require("@apollo/server/standalone");
+
+// You can proceed to define your Apollo server and logic here.
+const fs = require("fs");
+const path = require("path");
+const gql = require("graphql-tag");
+
+
+
+const typeDefs = gql(
+    fs.readFileSync(path.resolve(__dirname, "./schemas/schema.graphql"), {
+    encoding: "utf-8",
+  })
+);
 
 dotenv.config();
 
@@ -56,6 +71,17 @@ app.use((error, req, res, next) => {
     },
   });
 });
+
+async function startApolloServer() {
+  const server = new ApolloServer({ typeDefs });
+  const { url } = await startStandaloneServer(server);
+  console.log(`
+    🚀  Server is running!
+    📭  Query at ${url}
+  `);
+}
+
+startApolloServer();
 
 const port = process.env.DEV_PORT || 3000;
 app.listen(port);
