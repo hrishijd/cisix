@@ -18,6 +18,12 @@ module.exports = {
       executionBlockNo: {
         type: Sequelize.STRING
       },
+      executionFileName: {
+        type: Sequelize.STRING,
+      },
+      executionAkaveID: {
+        type: Sequelize.STRING,
+      },
       executionBlockState: {
         type: Sequelize.STRING
       },
