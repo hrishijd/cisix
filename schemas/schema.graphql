@@ -1,0 +1,9 @@
+type BlockRange {
+  startBlock: Int!
+  endBlock: Int!
+}
+
+type Query {
+  getBlockRanges: [BlockRange!]!
+  getLatestBlock: Int!
+}
