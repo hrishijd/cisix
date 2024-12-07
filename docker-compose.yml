@@ -1,19 +1,69 @@
 version: '3.8'
 
 services:
-  database:
+  # PostgreSQL Instances
+  database1:
     image: postgres:15
-    container_name: postgres_container
+    container_name: postgres_container_1
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: postgres
     ports:
-      - "5432:5432"
+      - "5433:5432" # Exposing port for instance 1
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data_1:/var/lib/postgresql/data
 
-  migrations:
+  database2:
+    image: postgres:15
+    container_name: postgres_container_2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - "5434:5432" # Exposing port for instance 2
+    volumes:
+      - db_data_2:/var/lib/postgresql/data
+
+  database3:
+    image: postgres:15
+    container_name: postgres_container_3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - "5435:5432" # Exposing port for instance 3
+    volumes:
+      - db_data_3:/var/lib/postgresql/data
+
+  database4:
+    image: postgres:15
+    container_name: postgres_container_4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - "5436:5432" # Exposing port for instance 4
+    volumes:
+      - db_data_4:/var/lib/postgresql/data
+
+  database5:
+    image: postgres:15
+    container_name: postgres_container_5
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - "5437:5432" # Exposing port for instance 5
+    volumes:
+      - db_data_5:/var/lib/postgresql/data
+
+  # Migration Services for each Database
+  migrations1:
     image: node:latest
     working_dir: /app
     command: >
@@ -26,33 +76,188 @@ services:
            sed -i 's/\"username\": \"root\"/\"username\": \"postgres\"/' config/config.json &&
            sed -i 's/\"password\": null/\"password\": \"password\"/' config/config.json &&
            sed -i 's/\"database\": \"database_development\"/\"database\": \"postgres\"/' config/config.json &&
-           sed -i 's/\"host\": \"127.0.0.1\"/\"host\": \"database\"/' config/config.json &&
+           sed -i 's/\"host\": \"127.0.0.1\"/\"host\": \"database1\"/' config/config.json &&
            sed -i 's/\"dialect\": \"mysql\"/\"dialect\": \"postgres\"/' config/config.json
          fi &&
          npx sequelize-cli db:migrate"
     depends_on:
-      - database
+      - database1
     environment:
-      DATABASE_URL: postgres://postgres:password@database:5432/postgres
+      DATABASE_URL: postgres://postgres:password@database1:5432/postgres
       NODE_ENV: development
     volumes:
-      - ./migrations:/app/migrations:delegated  # This will copy the local migrations to the container's migrations folder
-    restart: on-failure
-  
-  app:
+      - ./migrations:/app/migrations:delegated
+
+  migrations2:
+    image: node:latest
+    working_dir: /app
+    command: >
+      sh -c "npm init -y &&
+         npm install sequelize sequelize-cli pg mysql2 &&
+         if [ ! -f config/config.json ]; then
+           npx sequelize-cli init
+         fi &&
+         if [ -f config/config.json ]; then
+           sed -i 's/\"username\": \"root\"/\"username\": \"postgres\"/' config/config.json &&
+           sed -i 's/\"password\": null/\"password\": \"password\"/' config/config.json &&
+           sed -i 's/\"database\": \"database_development\"/\"database\": \"postgres\"/' config/config.json &&
+           sed -i 's/\"host\": \"127.0.0.1\"/\"host\": \"database2\"/' config/config.json &&
+           sed -i 's/\"dialect\": \"mysql\"/\"dialect\": \"postgres\"/' config/config.json
+         fi &&
+         npx sequelize-cli db:migrate"
+    depends_on:
+      - database2
+    environment:
+      DATABASE_URL: postgres://postgres:password@database2:5432/postgres
+      NODE_ENV: development
+    volumes:
+      - ./migrations:/app/migrations:delegated
+
+  migrations3:
+    image: node:latest
+    working_dir: /app
+    command: >
+      sh -c "npm init -y &&
+         npm install sequelize sequelize-cli pg mysql2 &&
+         if [ ! -f config/config.json ]; then
+           npx sequelize-cli init
+         fi &&
+         if [ -f config/config.json ]; then
+           sed -i 's/\"username\": \"root\"/\"username\": \"postgres\"/' config/config.json &&
+           sed -i 's/\"password\": null/\"password\": \"password\"/' config/config.json &&
+           sed -i 's/\"database\": \"database_development\"/\"database\": \"postgres\"/' config/config.json &&
+           sed -i 's/\"host\": \"127.0.0.1\"/\"host\": \"database3\"/' config/config.json &&
+           sed -i 's/\"dialect\": \"mysql\"/\"dialect\": \"postgres\"/' config/config.json
+         fi &&
+         npx sequelize-cli db:migrate"
+    depends_on:
+      - database3
+    environment:
+      DATABASE_URL: postgres://postgres:password@database3:5432/postgres
+      NODE_ENV: development
+    volumes:
+      - ./migrations:/app/migrations:delegated
+
+  migrations4:
+    image: node:latest
+    working_dir: /app
+    command: >
+      sh -c "npm init -y &&
+         npm install sequelize sequelize-cli pg mysql2 &&
+         if [ ! -f config/config.json ]; then
+           npx sequelize-cli init
+         fi &&
+         if [ -f config/config.json ]; then
+           sed -i 's/\"username\": \"root\"/\"username\": \"postgres\"/' config/config.json &&
+           sed -i 's/\"password\": null/\"password\": \"password\"/' config/config.json &&
+           sed -i 's/\"database\": \"database_development\"/\"database\": \"postgres\"/' config/config.json &&
+           sed -i 's/\"host\": \"127.0.0.1\"/\"host\": \"database4\"/' config/config.json &&
+           sed -i 's/\"dialect\": \"mysql\"/\"dialect\": \"postgres\"/' config/config.json
+         fi &&
+         npx sequelize-cli db:migrate"
+    depends_on:
+      - database4
+    environment:
+      DATABASE_URL: postgres://postgres:password@database4:5432/postgres
+      NODE_ENV: development
+    volumes:
+      - ./migrations:/app/migrations:delegated
+
+  migrations5:
+    image: node:latest
+    working_dir: /app
+    command: >
+      sh -c "npm init -y &&
+         npm install sequelize sequelize-cli pg mysql2 &&
+         if [ ! -f config/config.json ]; then
+           npx sequelize-cli init
+         fi &&
+         if [ -f config/config.json ]; then
+           sed -i 's/\"username\": \"root\"/\"username\": \"postgres\"/' config/config.json &&
+           sed -i 's/\"password\": null/\"password\": \"password\"/' config/config.json &&
+           sed -i 's/\"database\": \"database_development\"/\"database\": \"postgres\"/' config/config.json &&
+           sed -i 's/\"host\": \"127.0.0.1\"/\"host\": \"database5\"/' config/config.json &&
+           sed -i 's/\"dialect\": \"mysql\"/\"dialect\": \"postgres\"/' config/config.json
+         fi &&
+         npx sequelize-cli db:migrate"
+    depends_on:
+      - database5
+    environment:
+      DATABASE_URL: postgres://postgres:password@database5:5432/postgres
+      NODE_ENV: development
+    volumes:
+      - ./migrations:/app/migrations:delegated
+
+  # Node.js Applications
+  app1:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: node_app
+    container_name: node_app_1
     environment:
-      DATABASE_URL: postgres://postgres:password@database:5432/postgres
+      DATABASE_URL: postgres://postgres:password@database1:5432/postgres
     ports:
-      - "3000:3000"
+      - "3001:3000"
     depends_on:
-      - database
-      - migrations
+      - database1
+      - migrations1
     restart: always
 
+  app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node_app_2
+    environment:
+      DATABASE_URL: postgres://postgres:password@database2:5432/postgres
+    ports:
+      - "3002:3000"
+    depends_on:
+      - database2
+      - migrations2
+
+  app3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node_app_3
+    environment:
+      DATABASE_URL: postgres://postgres:password@database3:5432/postgres
+    ports:
+      - "3003:3000"
+    depends_on:
+      - database3
+      - migrations3
+
+  app4:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node_app_4
+    environment:
+      DATABASE_URL: postgres://postgres:password@database4:5432/postgres
+    ports:
+      - "3004:3000"
+    depends_on:
+      - database4
+      - migrations4
+
+  app5:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node_app_5
+    environment:
+      DATABASE_URL: postgres://postgres:password@database5:5432/postgres
+    ports:
+      - "3005:3000"
+    depends_on:
+      - database5
+      - migrations5
+
 volumes:
-  db_data: {}
-  redis-data:
+  db_data_1: {}
+  db_data_2: {}
+  db_data_3: {}
+  db_data_4: {}
+  db_data_5: {}
