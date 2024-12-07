@@ -1,24 +1,39 @@
-const User = require('../models/RegistrationData');
+const bcrypt = require("bcrypt");
+const User = require("../models/RegistrationData");
 
 const registerUser = async (req, res) => {
   try {
-    const exist = await User.findAll({ where: { email: req.body.fullName } });
-    if (exist.length === 0) {
-      const data = {
-        fullName: req.body.fullName,
-        email: req.body.email,
-        role: req.body.role,
-      };
-      const user = await User.create(data);
-      if (user) {
-        return res.status(201).send(user);
-      }
-    } else {
-      res.status(401).send('User already exists');
+    const { fullName, email, walletAddress, role, password } = req.body;
+
+    // Validate the input data
+    if (!fullName || !email || !walletAddress || !role || !password) {
+      return res.status(400).send("All fields are required");
     }
-    return res.status(409).send('Details are not correct');
+
+    // Check if the user already exists
+    const exist = await User.findOne({ where: { email } });
+    if (exist) {
+      return res.status(409).send("User already exists");
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create the user
+    const user = await User.create({
+      fullName,
+      email,
+      walletAddress,
+      role,
+      password: hashedPassword,
+    });
+
+    // Return the created user (excluding the password)
+    const { password: _, ...userWithoutPassword } = user.toJSON();
+    return res.status(201).send(userWithoutPassword);
   } catch (error) {
-    console.log(error);
+    console.error("Error registering user:", error);
+    return res.status(500).send("An error occurred while registering the user");
   }
 };
 
