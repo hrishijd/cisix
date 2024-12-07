@@ -8,7 +8,11 @@ const RPCs = {
 
 async function subscriber() {
     const lastBlocks = { "1": 21346912, "8453": 369415 };
-    const redisPublisher = createClient();
+    const redisPublisher = createClient(
+        {
+            url: "redis://default:ygFQThkMOOAACsEYyyinCtrIvSZuLiqy@junction.proxy.rlwy.net:55946",
+        }
+    );
     await redisPublisher.connect();
 
     while (true) {
