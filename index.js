@@ -2,11 +2,16 @@ const app = require("./app");
 const { storeBlob } = require("./controller/walrusUtility");
 const { subscriber } = require("./subscriber/subscriber");
 const { createClient } = require("redis");
+var dotenv = require('dotenv');
+dotenv.config();
+
+// Get the API_BASE_URL from the environment
+const REDIS_URL = process.env.REDIS_URL;
 
 async function startValidator() {
     // Redis Subscriber Configuration
     const redisSubscriber = createClient({
-        url: 'redis://default:ygFQThkMOOAACsEYyyinCtrIvSZuLiqy@junction.proxy.rlwy.net:55946',
+        url: REDIS_URL,
     });
 
     // Handle Redis connection errors

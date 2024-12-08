@@ -2,17 +2,29 @@ const { ethers } = require("ethers");
 const { createClient } = require("redis");
 const fs = require('fs');
 const { dirname } = require("path");
+var dotenv = require('dotenv');
+dotenv.config();
+
+// Get the API_BASE_URL from the environment
+const MAINNET_INFURA = process.env.MAINNET_INFURA;
+const BASE_MAINNT = process.env.BASE_MAINNT;
+const REDIS_URL = process.env.REDIS_URL;
+
+console.log("MAINNET_INFURA:", MAINNET_INFURA);
+console.log("BASE_MAINNT:", BASE_MAINNT);
+console.log("REDIS_URL:", REDIS_URL);
+
 
 const RPCs = {
-    "1": "https://mainnet.infura.io/v3/8fff52e813f44e2cbbb4e9d0a5e34075",
-    "8453": "https://base-mainnet.infura.io/v3/8fff52e813f44e2cbbb4e9d0a5e34075",
+    "1": MAINNET_INFURA,
+    "8453": BASE_MAINNT,
 };
 
 async function subscriber() {
     const lastBlocks = { "1": 0, "8453": 0 };
     const redisPublisher = createClient(
         {
-            url: "redis://default:ygFQThkMOOAACsEYyyinCtrIvSZuLiqy@junction.proxy.rlwy.net:55946",
+            url: REDIS_URL,
         }
     );
     await redisPublisher.connect();

@@ -12,14 +12,6 @@ const fs = require("fs");
 const path = require("path");
 const gql = require("graphql-tag");
 
-
-
-const typeDefs = gql(
-    fs.readFileSync(path.resolve(__dirname, "./schemas/schema.graphql"), {
-    encoding: "utf-8",
-  })
-);
-
 dotenv.config();
 
 const app = express();
@@ -72,17 +64,6 @@ app.use((error, req, res, next) => {
     },
   });
 });
-
-async function startApolloServer() {
-  const server = new ApolloServer({ typeDefs });
-  const { url } = await startStandaloneServer(server);
-  console.log(`
-    🚀  Server is running!
-    📭  Query at ${url}
-  `);
-}
-
-startApolloServer();
 
 const port = process.env.DEV_PORT || 3000;
 app.listen(port);}

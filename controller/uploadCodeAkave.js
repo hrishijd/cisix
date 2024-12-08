@@ -17,21 +17,6 @@ const createBucket = async (bucketName) => {
   }
 };
 
-// Function to upload a JavaScript file to a bucket
-const uploadFile = async (bucketName, filePath) => {
-  const form = new FormData();
-  form.append('file', fs.createReadStream(filePath));
-
-  try {
-    const response = await axios.post(`${API_BASE_URL}/buckets/${bucketName}/files`, form, {
-      headers: form.getHeaders(),
-    });
-    console.log('File uploaded:', response.data);
-  } catch (error) {
-    console.error('Error uploading file:', error.response ? error.response.data : error.message);
-  }
-};
-
 async function downloadFile(bucketName, fileName, outputDir) {
     try {
       const response = await axios.get(`${API_BASE_URL}/buckets/${bucketName}/files/${fileName}/download`, {

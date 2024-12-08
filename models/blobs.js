@@ -1,5 +1,5 @@
-var Sequelize = require("sequelize");
-var sequelize = require("../../Express Database/connection");
+const { DataTypes } = require('sequelize');
+var sequelize = require("../connection");
 
 var blobs = sequelize.define(
   "blobs",
