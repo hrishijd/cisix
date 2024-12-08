@@ -1,23 +1,23 @@
 var Sequelize = require("sequelize");
-var sequelize = require("../../Express Database/connection");
+var sequelize = require("../connection");
+const { FORCE } = require("sequelize/lib/index-hints");
 
 var blobs = sequelize.define(
   "blobs",
   {
     blobId: {
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER,
+      type: Sequelize.DataTypes.STRING,
     },
     walletAddress: {
-      type: Sequelize.STRING,
+      type: Sequelize.DataTypes.STRING,
     },
     executionId: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.DataTypes.INTEGER,
     },
-    BlockNo: {
-      type: Sequelize.STRING,
+    blockNo: {
+      type: Sequelize.DataTypes.INTEGER,
     },
   },
   {
@@ -26,6 +26,7 @@ var blobs = sequelize.define(
     freezeTableName: true,
     timestamps: true,
     logging: false,
+    FORCE: true,
   }
 );
 

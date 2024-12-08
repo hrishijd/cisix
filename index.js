@@ -1,5 +1,6 @@
 const app = require("./app");
 const { storeBlob } = require("./controller/walrusUtility");
+const blobs = require("./models/blobs");
 const { subscriber } = require("./subscriber/subscriber");
 const { createClient } = require("redis");
 
@@ -65,8 +66,21 @@ async function performOperation(chainId, blockNumber, result, address, fileNum) 
     if(process.env.LEADER){
         // Define the operation to be performed upon consensus
         console.log(`Performing operation on chain ${chainId}, block ${blockNumber}`);
-        const blob_id = await storeBlob({chainId, blockNumber, result, address, fileNum});
-        console.log('Blob', blob_id);
+        const blobId = await storeBlob({chainId, blockNumber, result, address, fileNum});
+        console.log('Blob', blobId);
+        console.log({
+            blobId,
+            walletAddress: address,
+            blockNo: parseInt(blockNumber),
+            executionId: parseInt(fileNum),
+        });
+
+        const blob = await blobs.create({
+            blobId,
+            walletAddress: address,
+            blockNo: parseInt(blockNumber),
+            executionId: parseInt(fileNum),
+        });
     }
 }
 

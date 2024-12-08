@@ -43,8 +43,10 @@ async function triggerHandlers(redisPublisher, provider, chainId, blockNumber) {
         // Trigger the handle function
         const nameDetails = file.split('-');
         const address  = nameDetails[0];
-        const fileNum = nameDetails[1].split('.')[1];
+        const fileNum = nameDetails[1].split('.')[0];
+        
         const result = await handle(provider, chainId, blockNumber);
+
         // Publish the result to the consensus channel
 
         const message = JSON.stringify({ chainId: chainId.toString(), blockNumber: `${blockNumber}`, result, address, fileNum });

@@ -2,21 +2,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Blobs', {
+    await queryInterface.createTable('blobs', {
       blobId: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       walletAddress: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       executionId: {
         type: Sequelize.INTEGER
       },
-      BlockNo: {
-        type: Sequelize.STRING
+      blockNo: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
