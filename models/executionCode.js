@@ -8,9 +8,8 @@ const ExecutionCode = sequelize.define('ExecutionCodes', {
     primaryKey: true,
     autoIncrement: true
   },
-  useremail: {
+  walletAddress: {
     type: DataTypes.STRING,
-    allowNull: true
   },
   executionBlockNo: {
     type: DataTypes.STRING,

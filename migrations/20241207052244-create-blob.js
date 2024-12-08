@@ -3,25 +3,19 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Blobs', {
-      id: {
+      blobId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      blobId: {
-        type: Sequelize.INTEGER
-      },
-      userId: {
+      walletAddress: {
         type: Sequelize.INTEGER
       },
       executionId: {
         type: Sequelize.INTEGER
       },
-      executionBlockState: {
-        type: Sequelize.STRING
-      },
-      executionChainIds: {
+      BlockNo: {
         type: Sequelize.STRING
       },
       createdAt: {

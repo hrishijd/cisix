@@ -1,14 +1,46 @@
-# Run the Akave Node 
-```bash
-docker run -d \
-  -p 8000:3000 \
-  -e NODE_ADDRESS="connect.akave.ai:5500" \
-  -e PRIVATE_KEY="" \
-  akave/akavelink:latest
+<h1 align="center">Welcome to cisix 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://github.com/hrishijd/cisix#readme" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
+  <a href="https://github.com/hrishijd/cisix/graphs/commit-activity" target="_blank">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
+  </a>
+</p>
+
+### 🏠 [Homepage](https://github.com/hrishijd/cisix#readme)
+
+## Install
+
+```sh
+npm install
 ```
 
-# Run Walrus
-walrus --config client_config.yaml get-wal
+## Usage
 
-## Run Walrus Aggrigator & Publisher
-walrus daemon -b "127.0.0.1:31415" --config client_config.yaml 
+```sh
+npm run start
+```
+
+## Run tests
+
+```sh
+npm run test
+```
+
+## Authors
+
+👤 **hrishi, Shashwwat and Fahim**
+
+- Github: [@hrishijd](https://github.com/hrishijd), [shashwat0309](https://github.com/shashwat0309) and [MoFahimKh](https://github.com/MoFahimKh)
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/hrishijd/cisix/issues). You can also take a look at the [contributing guide](https://github.com/hrishijd/cisix/blob/master/CONTRIBUTING.md).
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+---

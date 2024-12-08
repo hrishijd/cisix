@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const User = require("../models/RegistrationData");
 
 const registerUser = async (req, res) => {
@@ -16,21 +15,13 @@ const registerUser = async (req, res) => {
       return res.status(409).send("User already exists");
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // Create the user
     const user = await User.create({
-      fullName,
-      email,
       walletAddress,
-      role,
-      password: hashedPassword,
     });
 
     // Return the created user (excluding the password)
-    const { password: _, ...userWithoutPassword } = user.toJSON();
-    return res.status(201).send(userWithoutPassword);
+    return res.status(201).send("User Created");
   } catch (error) {
     console.error("Error registering user:", error);
     return res.status(500).send("An error occurred while registering the user");
