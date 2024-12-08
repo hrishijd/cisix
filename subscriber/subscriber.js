@@ -1,5 +1,7 @@
 const { ethers } = require("ethers");
 const { createClient } = require("redis");
+const fs = require('fs');
+const { dirname } = require("path");
 
 const RPCs = {
     "1": "https://mainnet.infura.io/v3/8fff52e813f44e2cbbb4e9d0a5e34075",
@@ -7,7 +9,7 @@ const RPCs = {
 };
 
 async function subscriber() {
-    const lastBlocks = { "1": 21346912, "8453": 369415 };
+    const lastBlocks = { "1": 0, "8453": 0 };
     const redisPublisher = createClient(
         {
             url: "redis://default:ygFQThkMOOAACsEYyyinCtrIvSZuLiqy@junction.proxy.rlwy.net:55946",
@@ -28,20 +30,24 @@ async function subscriber() {
     }
 }
 
-async function triggerHandlers(redisPublisher, provider, chainId, blockNumber) {
-    const handlers = { "1": ["sample_handler.js", "sample_handler.js"] };
+async function triggerHandlers(redisPublisher, provider, chainId, blockNumber) {  
+    let files = [];
 
-    if (!handlers[chainId]) return;
+    try {
+        files = fs.readdirSync(`handlers/dir_${chainId}`);
+    } catch {
+    }
 
-    for (const fileIndex in handlers[chainId]) {
-        const file = handlers[chainId][fileIndex];
-        const { handle } = require(`../handlers/handler_${fileIndex}/${file}`);
-
+    for (const file of files) {
+        const { handle } = require(`../handlers/dir_${chainId}/${file}`);
         // Trigger the handle function
+        const nameDetails = file.split('-');
+        const address  = nameDetails[0];
+        const fileNum = nameDetails[1].split('.')[1];
         const result = await handle(provider, chainId, blockNumber);
-
         // Publish the result to the consensus channel
-        const message = JSON.stringify({ chainId: chainId.toString(), blockNumber: `${blockNumber}`, result });
+
+        const message = JSON.stringify({ chainId: chainId.toString(), blockNumber: `${blockNumber}`, result, address, fileNum });
         await redisPublisher.publish("consensus_channel", message);
     }
 }

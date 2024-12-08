@@ -71,6 +71,7 @@ async function readBlob(blobId) {
   }
 }
 
+module.exports = {storeBlob, readBlob}
 // // Example usage
 // (async () => {
 //   try {

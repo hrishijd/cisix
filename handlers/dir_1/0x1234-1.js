@@ -17,10 +17,6 @@ const getPriceUniswapV2 = async (poolAddress, provider, blockNumber) => {
         // Fetch the reserves
         const [reserve0, reserve1, blockTimestampLast] = await poolContract.getReserves({ blockTag: blockNumber });
 
-        console.log(`Reserve0: ${reserve0.toString()}`);
-        console.log(`Reserve1: ${reserve1.toString()}`);
-        console.log(`Block Timestamp Last: ${blockTimestampLast}`);
-
         return { reserve0: reserve0.toString(), reserve1: reserve1.toString(), blockTimestampLast: blockTimestampLast.toString()};
     } catch (error) {
         console.error("Error fetching reserves:", error);

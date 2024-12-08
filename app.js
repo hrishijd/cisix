@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const rateLimiterMiddleware = require("./rateLimitermiddleware");
 const executeJScode = require("./api/routes/executeJScode");
-const registerUser = require("../cisix/api/routes/userManagemnet");
+const registerUser = require("./api/routes/userManagemnet");
 
 dotenv.config();
 

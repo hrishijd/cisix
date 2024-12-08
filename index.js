@@ -1,4 +1,5 @@
 const app = require("./app");
+const { storeBlob } = require("./controller/walrusUtility");
 const { subscriber } = require("./subscriber/subscriber");
 const { createClient } = require("redis");
 
@@ -26,7 +27,7 @@ async function startValidator() {
     // Subscribe to the consensus channel
     try {
         await redisSubscriber.subscribe("consensus_channel", async (message) => {
-            const { chainId, blockNumber, result } = JSON.parse(message);
+            const { chainId, blockNumber, result, address, fileNum } = JSON.parse(message);
             const key = `${chainId}-${blockNumber}`;
 
             if (!votes[key]) {
@@ -45,7 +46,7 @@ async function startValidator() {
             const requiredConsensus = Math.ceil(votes[key].total * 0.55);
             if (votes[key].yes >= requiredConsensus) {
                 console.log(`Consensus achieved for chain ${chainId}, block ${blockNumber}. Operation performed.`);
-                performOperation(chainId, blockNumber);
+                await performOperation(chainId, blockNumber, result, address, fileNum);
                 delete votes[key]; // Clear votes for this block
             } else if (votes[key].no >= requiredConsensus) {
                 console.log(`Consensus not achieved for chain ${chainId}, block ${blockNumber}. No operation performed.`);
@@ -59,10 +60,13 @@ async function startValidator() {
     }
 }
 
-function performOperation(chainId, blockNumber) {
+async function performOperation(chainId, blockNumber, result, address, fileNum) {
+
     if(process.env.LEADER){
         // Define the operation to be performed upon consensus
         console.log(`Performing operation on chain ${chainId}, block ${blockNumber}`);
+        const blob_id = await storeBlob({chainId, blockNumber, result, address, fileNum});
+        console.log('Blob', blob_id);
     }
 }
 
